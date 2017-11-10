@@ -5,8 +5,19 @@ sketch = Framer.Importer.load("imported/ios%20lockscreen%20prototype@3x", scale:
 
 codeR = "1234"
 code = ""
+button = ""
+
 
 codePoints = [sketch.code1, sketch.code2, sketch.code3, sketch.code4]
+
+socket = new WebSocket('ws://localhost:8080')
+
+socket.onmessage = (msg) ->
+	if msg.data == "button"
+		buttonPressed()
+	else
+		code += msg.data 
+		drawDots()
 
 for i in codePoints
 	i.visible = true
@@ -58,25 +69,30 @@ statusbar = new Layer
 
 pager.addPage(sketch.unlock)
 
-check = ->
+buttonPressed = ->
 # 	print code.length
-	
-	drawDots()
-				
+
 	if code.length > 3
-		if code == codeR
+		if code == codeR 
 # 			print "right"
-			unlock()
+			if button.data == "button"
+				unlock()
+				socket.send("right")
 		else
-			
-# 			wrongCode()
-# 			for i in codePoints
-# 				i.visible = false
+			socket.send("wrong")	
 			drawDots()
 			deleteDots()
-			code = ""
 			
-	
+			code = ""
+	else 
+			socket.send("wrong")
+			drawDots()
+			deleteDots()
+			code = ""	
+			
+		
+check = ->
+	drawDots()
 
 drawDots = ->
 	if code.length > 0
@@ -90,6 +106,10 @@ deleteDots = ->
 	for i in [0..3]
 			codePoints[i].animate
 				opacity: 0
+	
+
+send = ->
+	socket.send("nice")
 	
 
 sketch.$1.onTapStart ->
@@ -266,6 +286,7 @@ pager.content.on "change:x", ->
 
 
 unlock = ->
+	
 	pager.destroy(homeC)
 	
 	pager2 = 

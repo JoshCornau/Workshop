@@ -1,5 +1,5 @@
 {
-  "version" : 12,
+  "version" : 13,
   "root" : {
     "id" : "@UC]o<$~",
     "__class" : "CanvasNode",
@@ -16,8 +16,7 @@
         "width" : 375,
         "y" : 0,
         "exportIncludesBackground" : true,
-        "deviceType" : "apple-iphone-7-black",
-        "type" : "apple-iphone-7-black",
+        "deviceType" : "apple-iphone-8-space-gray",
         "fillGradient" : {
           "end" : "rgba(0,0,0,0)",
           "alpha" : 1,
